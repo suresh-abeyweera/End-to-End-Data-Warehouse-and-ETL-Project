@@ -46,5 +46,54 @@ So in the Project we are planning to have an Architecture like below.
 
 ![image](https://user-images.githubusercontent.com/61721484/147851835-ed1af38d-3876-48db-8b1d-0d47cff2f15d.png)
 
+**Create the Staging Tables**
+
+Run the above attached staging.sql file in SSMS and create the Staging tables. Here we get the required tables from the sourcing and do the slicing and dicing of the data as we need. 
+
+![image](https://user-images.githubusercontent.com/61721484/147851853-d1c02ec2-8f09-47b0-a0ed-f0ec49ef8315.png)
+
+I have created 2 SSIS projects. One for the data loading from Source DB to Staging. Other one is for data loading from Staging to Data Warehouse. 
+
+Once Project is imported definitely you need to tweak all the packages with updating the database name etc. I have written a Control Package to run all the SSIS package to do all the ETL related activities at once. This is bit awkward as need to do some manual adjustments. For proper migration of SSIS package we need to do this project using SQL server Developer Edition etc. But still you can do the tweaking with in few time.
+
+**Execute below SSIS Package**
+
+![image](https://user-images.githubusercontent.com/61721484/147851886-746ad6f2-9616-4c82-99d3-e881acfa8b9c.png)
+
+Now you can see the data has been loaded in the Staging environment.
+
+**Create the Data warehouse using warehouse.sql**
+
+Few things implemented in the Data Warehouse
+
+1.	Used Star Schema to the DWH which will improve query performances
+2.	Implemented surrogated Keys instead of provided business key. That will again improve the query performance.
+3.	Implemented slowly changing dimension type 2 for Dim Loan to keep history of changes happening in the Status column etc.
+4.	Created procedures for other Dimension to Refresh and insert records.(SCD type 1) 
+5.	Incremental loading for Fact Trans table.
+
+![image](https://user-images.githubusercontent.com/61721484/147851907-7706dcc6-3802-4f97-84fd-eb53cfe737e9.png)
+
+
+**Load data to the Data Warehouse using SSIS Project.**
+
+Use the provided SSIS project and to some tweaking of each packages (updating the database names etc.) and run the Control flow.
+
+![image](https://user-images.githubusercontent.com/61721484/147851917-9a830576-9ad5-42c9-8ed4-43bd5c0224b6.png)
+
+Now data warehouse is up and running. Next to connect power BI dashboard to the data warehouse in Get data option in Power BI.
+
+**Enhancements for this project you can try.**
+
+1.	Automation of the SSIS jobs.
+2.	Can integrate some other sources as flat files etc. (Each district information about population, Average Income etc.)
+3.	Can try changing the Primary keep format of source db with some prefix instead of Int. (Can understand the real use of the Surrogated Key).
+4.	Try the same project in Azure Cloud with Data Factory.
+
+I am working on the Power BI analysis part and Data warehouse further in this project and will update the GitHub repo soon.
+
+Suggested readings – https://aatinegar.com/wp-content/uploads/2016/05/Kimball_The-Data-Warehouse-Toolkit-3rd-Edition.pdf
+
+For any feedbacks contact me  suresh.abeyweera@gmail.com
 
 
