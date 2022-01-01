@@ -83,6 +83,8 @@ Use the provided SSIS project and to some tweaking of each packages (updating th
 
 Now data warehouse is up and running. Next to connect power BI dashboard to the data warehouse in Get data option in Power BI.
 
+![image](https://user-images.githubusercontent.com/61721484/147852035-36a629f6-e89e-496a-828a-1ce904fdcbb1.png)
+
 **Enhancements for this project you can try.**
 
 1.	Automation of the SSIS jobs.
